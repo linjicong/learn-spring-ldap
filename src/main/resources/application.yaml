@@ -1,0 +1,13 @@
+#spring:
+#  ldap:
+#    urls: ldap://1.14.139.65:53891
+#    username: cn=admin,dc=pub,dc=org
+#    password: q1w2e3r4
+#    base: dc=pub,dc=org
+
+spring:
+  ldap:
+    urls: ldap://localhost:389
+    username: cn=Manager,dc=maxcrc,dc=com
+    password: secret
+    base: dc=maxcrc,dc=com
