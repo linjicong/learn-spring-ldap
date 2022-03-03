@@ -23,9 +23,8 @@ public class PersonLinkHtmlRowLdapTreeVisitor extends HtmlRowLdapTreeVisitor {
 				String company = encodeValue(LdapUtils.getStringValue(dn, "ou"));
 				String fullName = encodeValue(LdapUtils.getStringValue(dn, "cn"));
 
-				return "showPerson.do?country=" + country + "&company=" + company + "&fullName=" + fullName;
-			}
-			else {
+				return "showPerson?country=" + country + "&company=" + company + "&fullName=" + fullName;
+			}else {
 				return super.getLinkForNode(node);
 			}
 		}

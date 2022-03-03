@@ -4,21 +4,56 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.ldap.odm.annotations.*;
 
+import javax.naming.Name;
+
+@Entry(objectClasses = {"inetOrgPerson", "organizationalPerson", "person", "top"})
 public class Person {
+   @Id
+   private Name dn;
+
+   @Attribute(name="cn")
+   @DnAttribute(value = "cn",index = 2)
    private String fullName;
 
+   @Attribute(name = "sn")
    private String lastName;
 
+   @Attribute(name = "description")
    private String description;
 
+   @Transient
+   @DnAttribute(value = "c", index = 0)
    private String country;
 
+   @Transient
+   @DnAttribute(value = "ou", index = 1)
    private String company;
 
+   @Attribute(name = "telephoneNumber")
    private String phone;
    //密码密文={SSHA}+base64(SHA1(明文密码+盐)+盐)
+
+   @Attribute(name = "userPassword")
    private String userPassword;
+
+   public Person() {
+   }
+
+   public Person(String country, String company, String fullName) {
+      this.fullName = fullName;
+      this.country = country;
+      this.company = company;
+   }
+
+   public Name getDn() {
+      return dn;
+   }
+
+   public void setDn(Name dn) {
+      this.dn = dn;
+   }
 
    public String getDescription() {
       return description;

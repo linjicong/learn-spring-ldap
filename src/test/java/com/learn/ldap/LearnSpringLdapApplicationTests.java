@@ -12,6 +12,7 @@ import org.springframework.ldap.odm.core.ObjectDirectoryMapper;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.SearchScope;
 import org.springframework.ldap.support.LdapUtils;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 
 import javax.naming.Name;
 import javax.naming.NamingEnumeration;
@@ -60,14 +61,15 @@ class LearnSpringLdapApplicationTests {
         //});
 
         //List<String> cns=ldapTemplate.search("", "objectclass=inetOrgPerson", (AttributesMapper<String>) attributes -> attributes.get("cn").get().toString());
-        ldapTemplate.listBindings(LdapUtils.emptyLdapName(),
-                new AbstractContextMapper<Object>() {
-                    @Override
-                    protected Object doMapFromContext(DirContextOperations ctx) {
-                        Name dn = ctx.getDn();
-                        System.out.println(dn);
-                        return null;
-                    }
-                });
+        //ldapTemplate.listBindings(LdapUtils.emptyLdapName(),
+        //        new AbstractContextMapper<Object>() {
+        //            @Override
+        //            protected Object doMapFromContext(DirContextOperations ctx) {
+        //                Name dn = ctx.getDn();
+        //                System.out.println(dn);
+        //                return null;
+        //            }
+        //        });
+        System.out.println(new LdapShaPasswordEncoder().encode("John Doe"));
     }
 }

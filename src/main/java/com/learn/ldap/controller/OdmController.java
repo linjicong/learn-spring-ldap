@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController
-@RequestMapping("/plain")
-public class PlainController {
+@RestController()
+@RequestMapping("/odm")
+public class OdmController {
     @Autowired
     private LdapTreeBuilder ldapTreeBuilder;
 
-    @Resource(name = "plainPersonDaoImpl")
+    @Resource(name = "odmPersonDaoImpl")
     private PersonDao personDao;
 
     @GetMapping("/showTree")

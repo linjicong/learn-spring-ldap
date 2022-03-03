@@ -1,6 +1,7 @@
 package com.learn.ldap.dao;
 
 import com.learn.ldap.domain.Person;
+
 import java.util.List;
 
 public interface PersonDao {

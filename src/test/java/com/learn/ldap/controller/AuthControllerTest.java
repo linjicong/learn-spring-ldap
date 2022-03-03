@@ -6,12 +6,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,7 +20,7 @@ class AuthControllerTest {
     @Test
     void getAuthName() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("Some Person","password");
+        headers.setBasicAuth("cwskv9nc","cwskv9nc");
         this.mockMvc.perform(get("/getAuthName").headers(headers))
                 .andExpect(status().isOk());
     }
@@ -31,7 +28,7 @@ class AuthControllerTest {
     @Test
     void getAuthDetail() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("linjicong","Ljc19940501");
+        headers.setBasicAuth("cwskv9nc","cwskv9nc");
         this.mockMvc.perform(get("/getAuthDetail").headers(headers))
                 .andExpect(status().isOk());
     }

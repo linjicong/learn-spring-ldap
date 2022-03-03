@@ -16,12 +16,13 @@ import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.ldap.LdapName;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Repository
-public class PersonDaoImpl implements PersonDao {
+public class PlainPersonDaoImpl implements PersonDao {
 
 	@Autowired
 	private LdapTemplate ldapTemplate;
@@ -75,28 +76,30 @@ public class PersonDaoImpl implements PersonDao {
 	private LdapName buildDn(Person person) {
 		return buildDn(person.getCountry(), person.getCompany(), person.getFullName());
 	}
-
-	private LdapName buildDn(String country, String company, String fullname) {
-        return LdapNameBuilder.newInstance()
-                .add("c", country)
-                .add("ou", company)
-                .add("cn", fullname)
-                .build();
+	private LdapName buildDn(String country, String company, String fullName) {
+		return LdapNameBuilder.newInstance()
+				.add("c", country)
+				.add("ou", company)
+				.add("cn", fullName)
+				.build();
 	}
 
+	/**
+	 * Maps from Person objects to DirContextAdapter.
+	 * 从Java对象转换到LDAP的上下文
+	 */
 	private void mapToContext(Person person, DirContextAdapter context) {
-		context.setAttributeValues("objectclass", new String[] { "top", "person" });
+		context.setAttributeValues("objectclass", new String[] { "top", "person","organizationalPerson","inetOrgPerson" });
 		context.setAttributeValue("cn", person.getFullName());
 		context.setAttributeValue("sn", person.getLastName());
+		context.setAttributeValue("userPassword", person.getUserPassword());
 		context.setAttributeValue("description", person.getDescription());
 		context.setAttributeValue("telephoneNumber", person.getPhone());
 	}
 
 	/**
-	 * Maps from DirContextAdapter to Person objects. A DN for a person will be
-	 * of the form <code>cn=[fullname],ou=[company],c=[country]</code>, so
-	 * the values of these attributes must be extracted from the DN. For this,
-	 * we use the LdapName along with utility methods in LdapUtils.
+	 * Maps from DirContextAdapter to Person objects.
+	 * 从LDAP的DN转换到Java对象
 	 */
 	private final static ContextMapper<Person> PERSON_CONTEXT_MAPPER = new AbstractContextMapper<Person>() {
         @Override
@@ -108,6 +111,7 @@ public class PersonDaoImpl implements PersonDao {
 			person.setCompany(LdapUtils.getStringValue(dn, 1));
 			person.setFullName(context.getStringAttribute("cn"));
 			person.setLastName(context.getStringAttribute("sn"));
+			person.setUserPassword(new String((byte[])context.getObjectAttribute("userPassword"), StandardCharsets.UTF_8));
 			person.setDescription(context.getStringAttribute("description"));
 			person.setPhone(context.getStringAttribute("telephoneNumber"));
 
